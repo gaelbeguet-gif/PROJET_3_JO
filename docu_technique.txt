@@ -1,0 +1,111 @@
+================================================================================
+DOCUMENTATION TECHNIQUE DÉTAILLÉE : ORACLE OLYMPIQUE LA28 (v2.3)
+Date : 08/02/2026
+Fichier principal : app_jo_2.py
+================================================================================
+
+1. ARCHITECTURE ET FICHIERS DU PROJET
+-------------------------------------
+
+1.1 ARBORESCENCE DE FICHIERS (FILE TREE)
+    Voici la structure exacte que doit avoir le dossier racine 'PROJET_3' :
+
+    PROJET_3/
+    ├── app_jo_2.py                 # [MAIN] Le script de l'application Streamlit
+    ├── download_assets.py          # [SCRIPT] Pour télécharger/générer les images locales
+    ├── requirements.txt            # [CONFIG] Liste des librairies (pip install -r requirements.txt)
+    ├── docu_technique.txt          # [DOC] Ce fichier de documentation
+    │
+    ├── data/ (ou racine)
+    │   ├── athlete_events_ml_ready.csv  # [DATA] Historique pour le Machine Learning
+    │   └── la28_venues_geocoded.csv     # [DATA] Coordonnées GPS pour la Carte
+    │
+    ├── assets/                     # [MEDIA] Dossier images (Généré par download_assets.py)
+    │   ├── LA28GamesPlanMainPage.webp   # Image d'accueil (Hero)
+    │   ├── sofi.jpg, coliseum.jpg...    # Photos des sites (recadrées ou brutes)
+    │   └── default.png                  # (Optionnel) Image de secours
+    │
+    └── venv/                       # [ENV] Environnement virtuel Python (Non partagé sur Git)
+
+1.2 DÉTAIL DES DONNÉES (DATA LAYER)
+    A. athlete_events_ml_ready.csv
+       - Source : Kaggle (Nettoyé).
+       - Usage : Entraînement du modèle Machine Learning (Random Forest).
+    
+    B. la28_venues_geocoded.csv
+       - Source : Script geoloc.py.
+       - Contenu : Noms des sites, Sports, Latitude, Longitude.
+       - Usage : Page "Carte Interactive" (PyDeck).
+
+1.3 DÉPENDANCES CLÉS (LIBRARIES)
+    - Core : streamlit, pandas, numpy, os, random.
+    - ML : scikit-learn (RandomForestRegressor, MultiOutputRegressor).
+    - Visuel : pydeck (Cartes 3D), PIL (ImageOps, Traitement d'images).
+    - UI : streamlit-option-menu (Navigation), streamlit-lottie (Animations).
+    - IA : google-genai (Chatbot Gemini).
+
+================================================================================
+
+2. LOGIQUE MÉTIER & BACKEND (app_jo_2.py)
+-----------------------------------------
+
+[A] CONFIGURATION & STYLE
+    - Thème : "Dark Neon" (#1A1A1A background, #FA009C accent).
+    - Injection CSS pour surcharger les composants natifs Streamlit.
+
+[B] COMPOSANT : BANDEAU PHOTO DYNAMIQUE (afficher_banniere_photos)
+    - Déclenchement : Sur toutes les pages SAUF "Carte Interactive".
+    - Logique :
+      1. Scanne le dossier /assets.
+      2. Filtre les fichiers systèmes et l'image d'accueil.
+      3. Sélectionne 5 images au hasard.
+      4. Traitement PIL : ImageOps.fit() pour recadrage centré en 600x400px.
+      5. Gestion d'erreur : Bloc try/except pour ignorer les fichiers corrompus.
+
+[C] MACHINE LEARNING
+    - Modèle : Random Forest (entraîné à la volée avec @st.cache_resource).
+    - Fonction : predict_batch().
+    - Features : Pays, Année, Hôte, Athlètes, Sports, PIB (simulé via Team).
+
+================================================================================
+
+3. DÉTAIL DES VUES (PAGES)
+--------------------------
+
+[1] PAGE ACCUEIL (page_home)
+    - Hero Image : Chargement sécurisé de 'LA28GamesPlanMainPage.webp' (Local ou URL secours).
+    - Présentation : Grid layout décrivant les 4 modules de l'application.
+
+[2] PAGE PRÉDICTIONS (page_prediction)
+    - Interface : Sélecteurs pour Pays et Sport.
+    - Sortie : 
+      * KPI : Médailles d'Or, Argent, Bronze prédites.
+      * Comparatif : Delta vs Historique.
+      * Gadget : Compte à rebours J-X.
+
+[3] PAGE CARTE INTERACTIVE (page_map)
+    - Structure Visuelle (Mise à jour v2.3) :
+      * Zone HAUT : Bannière Photo Large (ImageOps.fit 1200x500px).
+      * Zone BAS-GAUCHE (2/3) : Carte PyDeck interactive.
+      * Zone BAS-DROITE (1/3) : Tableau des sites filtrable.
+    
+    - Logique d'Interaction :
+      * Clic sur le tableau -> Mise à jour du State (Zoom Map + Changement Photo Haut).
+      * Dictionnaire de mapping : VENUE_FILES (Code -> Nom fichier).
+    
+    - Sécurité (get_venue_image) :
+      * Vérifie l'existence locale du fichier.
+      * Si absent : Renvoie une URL Wikimedia (Drapeau Olympique) pour éviter le crash.
+      * Lien Google Street View généré dynamiquement via Lat/Lon.
+
+[4] PAGE ATHLÈTES (page_athletes)
+    - Contenu : Maquette (Mockup).
+    - Affiche des profils statiques pour démonstration UI.
+
+[5] PAGE CHATBOT (page_chatbot)
+    - Moteur : Google Gemini 2.0 Flash via API Key.
+    - Features : Historique de session, Streaming de réponse.
+    - UI : Animation Lottie d'attente (Robot).
+
+================================================================================
+FIN DU DOCUMENT

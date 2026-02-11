@@ -1,0 +1,15 @@
+# Ignorer l'environnement virtuel (TRÈS IMPORTANT)
+venv/
+.venv/
+env/
+
+# Ignorer les fichiers compilés Python
+__pycache__/
+*.pyc
+
+# Ignorer les secrets (Clés API)
+.streamlit/secrets.toml
+.env
+
+# Ignorer les fichiers système inutiles
+.DS_Store

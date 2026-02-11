@@ -1,0 +1,41 @@
+HISTORIQUE DES MODIFICATIONS - PROJET ORACLE OLYMPIQUE
+
+1. STRUCTURE DU CODE (REFACTORING)
+----------------------------------
+[ORIGINE] : Code linéaire (script séquentiel), tout le code s'exécutait à la suite.
+[FINAL]   : Architecture modulaire basée sur des fonctions ("Router Pattern").
+            - Création de fonctions dédiées : page_prediction(), page_athletes(), page_chatbot().
+            - La logique principale n'est exécutée que si la page correspondante est appelée.
+
+2. NAVIGATION & INTERFACE
+-------------------------
+[ORIGINE] : Page unique, défilement vertical infini.
+[FINAL]   : Ajout d'une Barre Latérale (Sidebar) pour la navigation.
+            - Menu Radio bouton pour basculer entre les 3 vues.
+            - Ajout de deux nouvelles pages (Athlètes, Chatbot).
+
+3. FONCTIONNALITÉS AJOUTÉES
+---------------------------
+[NOUVEAU] : Intégration de l'Intelligence Artificielle (Chatbot).
+            - Utilisation de la librairie `google-genai`.
+            - Gestion de la mémoire de conversation via `st.session_state`.
+            - Affichage en streaming (effet machine à écrire) de la réponse.
+[NOUVEAU] : Page "Athlètes" (Structure vide prête pour l'annuaire).
+
+4. DESIGN & CSS (STYLING)
+-------------------------
+[ORIGINE] : Thème sombre basique, quelques titres colorés.
+[FINAL]   : Thème complet "Noir & Rose" (Charte LA28).
+            - KPI (Métriques) : Force le texte en BLANC pour lisibilité sur fond noir.
+            - Chatbot : Bulles gris foncé, texte blanc, titres roses.
+            - Tableaux : Fond sombre harmonisé.
+            - Suppression des bordures par défaut indésirables.
+
+5. CORRECTIONS TECHNIQUES & BUGS
+--------------------------------
+- Import : Ajout de la librairie `google.genai`.
+- API Google : 
+    - Passage au modèle générique `gemini-flash-latest` pour contourner les erreurs 404 (version introuvable) et 429 (quota dépassé).
+    - Correction de la persistance du client API via `st.session_state.client` (évite la déconnexion entre deux messages).
+- Sécurité : Utilisation de `st.secrets` pour la clé API au lieu de variables en dur ou Colab userdata.
+- KPI : Correction CSS spécifique pour cibler les balises internes de Streamlit (`[data-testid="stMetric"]`) qui rendaient le texte invisible.
