@@ -1,15 +1,18 @@
-# Ignorer l'environnement virtuel (TRÈS IMPORTANT)
+# Environnement virtuel
 venv/
 .venv/
 env/
 
-# Ignorer les fichiers compilés Python
-__pycache__/
-*.pyc
+# Cache Python
+**/__pycache__/
+*.py[cod]
+*$py.class
 
-# Ignorer les secrets (Clés API)
-.streamlit/secrets.toml
+# Configuration VS Code
+.vscode/
+
+# Données volumineuses ou sensibles
+*.csv
+*.xlsx
 .env
-
-# Ignorer les fichiers système inutiles
-.DS_Store
+.streamlit/secrets.toml
