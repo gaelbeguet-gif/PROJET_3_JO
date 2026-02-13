@@ -15,6 +15,30 @@ from streamlit_lottie import st_lottie
 from PIL import Image, ImageOps
 
 # ==============================================================================
+#  INITIALISATION & CONFIGURATION
+# ==============================================================================
+# --- INITIALISATION UNIQUE ---
+if "chat_session" not in st.session_state:
+    api_key = st.secrets.get("GOOGLE_API_KEY")
+    if not api_key:
+        st.error("Clé API manquante dans .streamlit/secrets.toml")
+        st.stop()
+    
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.0-flash")
+    
+    st.session_state.chat_session = model.start_chat(history=[])
+    st.session_state.messages = []
+
+# --- LA FONCTION MANQUANTE (AVEC CACHE) ---
+@st.cache_data(show_spinner=False)
+def obtenir_reponse_ia(question):
+    """Envoie la question à l'IA et mémorise la réponse."""
+    # Cette ligne utilise la session créée juste au-dessus
+    response = st.session_state.chat_session.send_message(question)
+    return response.text 
+
+# ==============================================================================
 # CONFIGURATION & STYLE (CSS)
 # ==============================================================================
 st.set_page_config(page_title="Oracle Olympique LA28", page_icon="🥇", layout="centered")
@@ -578,6 +602,14 @@ def page_athletes():
 # 4.5  PAGE Chatbot (IA)
 # ==============================================================================
 
+if st.button("🗑️ Effacer l'historique"):
+    # On vide les messages et on réinitialise la session de chat
+    st.session_state.messages = []
+    # On force la recréation de la session au prochain passage
+    if "chat_session" in st.session_state:
+        del st.session_state.chat_session
+    st.rerun()
+
 def load_lottieurl(url):
     """Fonction pour charger l'animation Lottie depuis une URL."""
     try:
@@ -670,8 +702,10 @@ def page_chatbot():
         with st.chat_message("assistant"):
             try:
                 with st.spinner("Analyse tactique en cours..."):
-                    response = st.session_state.chat_session.send_message_stream(question)
-                    full_resp = st.write_stream(chunk.text for chunk in response if chunk.text)
+                    # --- APPLICATION DU CACHE ICI ---
+                    full_resp = obtenir_reponse_ia(question)
+                    st.markdown(full_resp)
+                
                 st.session_state.messages.append({"role": "assistant", "content": full_resp})
             except Exception as e:
                 st.error(f"Oups, petite faute technique : {e}")

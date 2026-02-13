@@ -11,8 +11,22 @@ env/
 # Configuration VS Code
 .vscode/
 
+# Fichiers secrets (TRÈS IMPORTANT)
+.env
+.streamlit/secrets.toml
+
 # Données volumineuses ou sensibles
 *.csv
 *.xlsx
-.env
-.streamlit/secrets.toml
+# ---> SAUF les bases de données requises pour le projet :
+!athlete_events_ml_ready.csv
+!la28_venues_geocoded.csv
+
+# ---------------------------------------------------
+# Fichiers de test, brouillons et dossiers obsolètes
+# ---------------------------------------------------
+app_jofinal.py
+page_athlete.ipynb
+test_api.py
+check_assets.py
+PROJET_3_Streamlit/

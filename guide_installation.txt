@@ -1,0 +1,77 @@
+GUIDE D'INSTALLATION : ORACLE OLYMPIQUE LA28
+============================================
+
+Ce guide vous permet d'installer et de lancer l'application Streamlit "Oracle Olympique" sur votre ordinateur via Visual Studio Code (VS Code).
+
+PRÉREQUIS
+---------
+1. Avoir installé Python (version 3.9 ou supérieure).
+2. Avoir installé Visual Studio Code.
+3. Posséder une clé API Google (Gemini) valide.
+
+ÉTAPE 1 : PRÉPARATION DU DOSSIER DANS VS CODE
+---------------------------------------------
+1. Créez un nouveau dossier sur votre ordinateur nommé "PROJET_3".
+2. Ouvrez ce dossier "PROJET_3" avec Visual Studio Code (Clic droit > Ouvrir avec Code, ou Menu Fichier > Ouvrir le dossier).
+3. Copiez tous les fichiers fournis (le contenu du zip) à l'intérieur de ce dossier.
+   -> Vous devez voir le fichier "jo_final.py" et le dossier "assets" dans la barre latérale gauche de VS Code.
+
+ÉTAPE 2 : CRÉATION DE L'ENVIRONNEMENT VIRTUEL
+---------------------------------------------
+Cette étape isole le projet pour éviter les conflits avec d'autres programmes Python.
+
+1. Dans VS Code, ouvrez un nouveau Terminal (Menu en haut : Terminal > New Terminal).
+2. Tapez la commande suivante selon votre système et appuyez sur Entrée :
+   
+   [Sur Windows] :
+   python -m venv venv
+
+   [Sur Mac/Linux] :
+   python3 -m venv venv
+
+3. Activez l'environnement (une parenthèse "(venv)" doit apparaître au début de la ligne) :
+   
+   [Sur Windows - Invite de commande classique] :
+   venv\Scripts\activate
+   
+   [Sur Windows - PowerShell] :
+   .\venv\Scripts\Activate.ps1
+   
+   [Sur Mac/Linux] :
+   source venv/bin/activate
+
+ÉTAPE 3 : INSTALLATION DES BIBLIOTHÈQUES
+----------------------------------------
+Toujours dans le terminal (assurez-vous que (venv) est bien affiché au début de la ligne), installez les outils nécessaires en tapant :
+
+pip install -r requirements.txt
+
+(Attendez que l'installation se termine, cela peut prendre une ou deux minutes).
+
+ÉTAPE 4 : CONFIGURATION DE LA CLÉ API (IA)
+------------------------------------------
+L'application a besoin d'une clé secrète pour discuter avec l'IA Gemini.
+
+1. Dans VS Code, faites un clic droit dans la barre latérale gauche (dans le vide) > Nouveau Dossier. Nommez-le ".streamlit" (avec le point au début).
+2. Faites un clic droit sur ce dossier ".streamlit" > Nouveau Fichier. Nommez-le "secrets.toml".
+3. Ouvrez ce fichier "secrets.toml" et collez votre clé comme ceci :
+
+GOOGLE_API_KEY = "AIzaSyD......(collez votre propre clé ici)......"
+
+4. Sauvegardez le fichier (Ctrl + S).
+
+ÉTAPE 5 : LANCEMENT DE L'APPLICATION
+------------------------------------
+Tout est prêt ! Lancez l'application avec cette commande dans le terminal :
+
+streamlit run jo_final.py
+
+Votre navigateur internet va s'ouvrir automatiquement avec l'Oracle Olympique.
+
+BONUS : RÉSOLUTION DE PROBLÈMES
+-------------------------------
+- Si les images ne s'affichent pas : Vérifiez que le dossier "assets" est bien au même niveau que "jo_final.py".
+- Si le chatbot ne répond pas : Vérifiez votre clé API dans le fichier secrets.toml.
+
+============================================
+Bonne découverte des JO LA28 !
