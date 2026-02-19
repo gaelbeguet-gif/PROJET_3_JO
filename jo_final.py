@@ -221,7 +221,7 @@ def predict_batch(df_subset, team_name):
         'Prev_Bronze': last_known['Bronze'], 'Is_Host': [1 if "United States" in team_name else 0] * len(last_known)
     })
     raw_preds = model.predict(input_batch)
-    preds = (raw_preds > 0.55).astype(int)
+    preds = (raw_preds > 0.50).astype(int)
     results = last_known[['Sport', 'Event']].copy()
     results['Or'], results['Argent'], results['Bronze'] = preds[:, 0], preds[:, 1], preds[:, 2]
     results['Total_Score'] = results[['Or', 'Argent', 'Bronze']].sum(axis=1)
