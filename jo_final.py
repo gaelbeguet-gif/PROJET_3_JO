@@ -182,6 +182,12 @@ def load_and_train_model():
     df = df[df['Season'] == 'Summer'].copy()
     recent_events = df[df['Year'] >= 2012]['Event'].unique()
 
+    # 1. Identifier la liste exacte des sports présents sur les dernières éditions (ex: depuis 2012)
+    sports_actuels = df[df['Year'] >= 2012]['Sport'].unique()
+
+    # 2. Filtrer le dataframe principal pour exclure définitivement les sports obsolètes
+    df = df[df['Sport'].isin(sports_actuels)]
+
     for m in ['Gold', 'Silver', 'Bronze']:
         df[m] = (df['Medal'] == m).astype(int)
 
