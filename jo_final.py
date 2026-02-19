@@ -265,7 +265,7 @@ def page_prediction():
     st.markdown("---")
     col1, col2 = st.columns(2)
     pays_list = sorted(data_ml['Team'].astype(str).unique())
-    selected_team = col1.selectbox("🏳️ Pays", pays_list, index=pays_list.index("France") if "France" in pays_list else 0)
+    selected_team = col1.selectbox("🏳️ Pays", pays_list, index=pays_list.index("United States") if "United States" in pays_list else 0)
     sports = sorted(data_ml[data_ml['Team'] == selected_team]['Sport'].unique())
     if not sports:
         st.warning(f"Aucune donnée pour {selected_team}.")
