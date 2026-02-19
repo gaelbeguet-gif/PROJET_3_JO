@@ -270,7 +270,7 @@ def page_prediction():
     if not sports:
         st.warning(f"Aucune donnée pour {selected_team}.")
         return
-    default_sport = 'Swimming' if 'Swimming' in sports else sports[0]
+    default_sport = 'Judo' if 'Judo' in sports else sports[0]
     selected_sport = col2.selectbox("🏅 Discipline", sports, index=sports.index(default_sport))
 
     if st.button('🔮 ANALYSER LA DISCIPLINE'):
